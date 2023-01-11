@@ -1,12 +1,17 @@
 export default class HttpClient {
-  constructor(baseURL, authErrorEventBus) {
+  constructor(baseURL, authErrorEventBus, getCsrfToken) {
     this.baseURL = baseURL;
     this.authErrorEventBus = authErrorEventBus;
+    this.getCsrfToken = getCsrfToken;
   }
   async fetch(url, options) {
     const res = await fetch(`${this.baseURL}${url}`, {
       ...options,
-      headers: { 'Content-Type': 'application/json', ...options.headers },
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+        'twitter-csrf-token': this.getCsrfToken(),
+      },
       credentials: 'include',
     });
 

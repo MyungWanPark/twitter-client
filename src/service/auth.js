@@ -3,6 +3,13 @@ export default class AuthService {
     this.http = http;
   }
 
+  async csrfToken() {
+    const response = await this.http.fetch('/auth/csrf-token', {
+      method: 'GET',
+    });
+    return response.csrfToken;
+  }
+
   async signup(username, password, name, email, url) {
     return this.http.fetch('/auth/signup', {
       method: 'POST',
@@ -33,6 +40,8 @@ export default class AuthService {
   }
 
   async logout() {
-    this.tokenStorage.clearToken();
+    return this.http.fetch('/auth/logout', {
+      method: 'POST',
+    });
   }
 }
